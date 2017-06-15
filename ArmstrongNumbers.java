@@ -3,10 +3,21 @@ import java.util.TreeSet;
 
 public class ArmstrongNumbers {
     private static final int AMOUNT_OF_SIMPLE_DIGITS = 10; // from 0 to 9
+    private static final long MAX_NUMBER = Long.MAX_VALUE;
+    private static final int AMOUNT_OF_DIGITS_IN_NUMBER = (int)Math.log10(MAX_NUMBER) + 1;
+    private static final long[][] ARRAY_OF_POWERS = new long[AMOUNT_OF_SIMPLE_DIGITS][AMOUNT_OF_DIGITS_IN_NUMBER + 1];
+
+    static {
+        for (int i = 0; i < AMOUNT_OF_SIMPLE_DIGITS; i++) {
+            for (int j = 1; j <= AMOUNT_OF_DIGITS_IN_NUMBER; j++) {
+                ARRAY_OF_POWERS[i][j] = pow(i, j);
+            }
+        }
+    }
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
-        Set<Long> result = getNumbers(Long.MAX_VALUE);
+        Set<Long> result = getNumbers(MAX_NUMBER);
 
         int i = 1;
         for (long armstrongNumber : result) {
@@ -19,13 +30,6 @@ public class ArmstrongNumbers {
 
     private static Set<Long> getNumbers(final long number) {
         Set<Long> armstrongNumbers = new TreeSet<>();
-        int currentAmountOfDigits = (int)Math.log10(number) + 1;  //get amount of digits in a number
-        long[][] arrayOfPowers = new long[AMOUNT_OF_SIMPLE_DIGITS][currentAmountOfDigits + 1];
-        for (int i = 0; i < AMOUNT_OF_SIMPLE_DIGITS; i++) {
-            for (int j = 1; j <= currentAmountOfDigits; j++) {
-                arrayOfPowers[i][j] = pow(i, j);
-            }
-        }
 
         //Main loop
         for (long i = 1; i < number; i = getNextNumber(i)) {
@@ -33,8 +37,8 @@ public class ArmstrongNumbers {
                 break; // the maximum value is reached
             }
 
-            long sumOfPowers = getSumOfPowers(i, arrayOfPowers);
-            if (sumOfPowers <= number && isArmstrongNumber(sumOfPowers, arrayOfPowers)) {
+            long sumOfPowers = getSumOfPowers(i);
+            if (sumOfPowers <= number && isArmstrongNumber(sumOfPowers)) {
                 armstrongNumbers.add(sumOfPowers);
             }
         }
@@ -76,17 +80,17 @@ public class ArmstrongNumbers {
         return (number + 1) % 10 != 1;
     }
 
-    private static long getSumOfPowers(long number, final long[][] arrayOfPowers) {
+    private static long getSumOfPowers(long number) {
         int power = (int)Math.log10(number) + 1; // get amount of digits in a number
         long currentSum = 0;
         while (number > 0) {
-            currentSum = currentSum + arrayOfPowers[(int)(number % 10)][power]; // get powers from array by indexes and then the sum.
+            currentSum = currentSum + ARRAY_OF_POWERS[(int)(number % 10)][power]; // get powers from array by indexes and then the sum.
             number = number / 10;
         }
         return currentSum;
     }
 
-    private static boolean isArmstrongNumber(final long number, final long[][] arrayOfPowers) {
-        return number == getSumOfPowers(number, arrayOfPowers);
+    private static boolean isArmstrongNumber(final long number) {
+        return number == getSumOfPowers(number);
     }
 }
