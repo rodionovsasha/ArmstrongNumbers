@@ -13,6 +13,14 @@ public class ArmstrongNumbers {
                 ARRAY_OF_POWERS[i][j] = pow(i, j);
             }
         }
+        /* An equivalent sequence of increasing values can be produced by stream API, but this uses more memory:
+           loop uses 5mb, stream 7 mb
+            IntStream.range(0, AMOUNT_OF_SIMPLE_DIGITS).forEach(i ->
+                    IntStream.rangeClosed(1, AMOUNT_OF_DIGITS_IN_NUMBER).forEach(j ->
+                            ARRAY_OF_POWERS[i][j] = pow(i, j)
+                    )
+            );
+        */
     }
 
     public static void main(String[] args) {
@@ -24,6 +32,7 @@ public class ArmstrongNumbers {
             System.out.println(i + ". " + armstrongNumber);
             i++;
         }
+        //result.forEach(System.out::println); also increase memory usage
         System.out.println(String.format("Execution time: %dms", (System.currentTimeMillis() - startTime)));
         System.out.println("Used memory: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024) + "mb");
     }
