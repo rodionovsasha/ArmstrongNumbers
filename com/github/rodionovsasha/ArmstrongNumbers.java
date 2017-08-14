@@ -66,12 +66,15 @@ public class ArmstrongNumbers {
         }
     }
 
+    /**
+     * Analog of Math.pow which works with long type
+     */
     private static long pow(final int base, final int exponent) {
-        long productOfNumbers = 1;
+        long pow = 1;
         for (int i = 1; i <= exponent; i++) {
-            productOfNumbers = productOfNumbers * base;
+            pow *= base;
         }
-        return productOfNumbers;
+        return pow;
     }
 
     /*
