@@ -48,9 +48,9 @@ public class ArmstrongNumbers {
         return armstrongNumbers;
     }
 
-    private static long getNextNumber(long number) {
+    private static long getNextNumber(final long number) {
         long copyOfNumber = number;
-        if (isGrowingNumber(number)) { // here we have numbers where each digit not less than previous one and not more than next one: 12, 1557, 333 and so on.
+        if (isGrowingNumber(copyOfNumber)) { // here we have numbers where each digit not less than previous one and not more than next one: 12, 1557, 333 and so on.
             return ++copyOfNumber;
         } else { // here we have numbers which end in zero: 10, 20, ..., 100, 110, 5000, 1000000 and so on.
             long count = 1;
