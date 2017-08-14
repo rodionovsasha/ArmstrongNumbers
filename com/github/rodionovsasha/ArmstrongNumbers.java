@@ -49,10 +49,10 @@ public class ArmstrongNumbers {
     }
 
     private static long getNextNumber(long number) {
+        long copyOfNumber = number;
         if (isGrowingNumber(number)) { // here we have numbers where each digit not less than previous one and not more than next one: 12, 1557, 333 and so on.
-            return ++number;
+            return ++copyOfNumber;
         } else { // here we have numbers which end in zero: 10, 20, ..., 100, 110, 5000, 1000000 and so on.
-            long copyOfNumber = number;
             long count = 1;
 
             while (copyOfNumber % 10 == 0) {// 5000 -> 500 -> 50: try to get the last non-zero digit
