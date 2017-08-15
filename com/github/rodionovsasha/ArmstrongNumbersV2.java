@@ -2,35 +2,33 @@ package com.github.rodionovsasha;
 
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
-public class ArmstrongNumbers {
+public class ArmstrongNumbersV2 {
     private static final int AMOUNT_OF_SIMPLE_DIGITS = 10; // from 0 to 9
     private static final long MAX_NUMBER = Long.MAX_VALUE;
     private static final int AMOUNT_OF_DIGITS_IN_NUMBER = (int)Math.log10(MAX_NUMBER) + 1;
     private static final long[][] ARRAY_OF_POWERS = new long[AMOUNT_OF_SIMPLE_DIGITS][AMOUNT_OF_DIGITS_IN_NUMBER + 1];
 
     static {
-        for (int i = 0; i < AMOUNT_OF_SIMPLE_DIGITS; i++) {
-            for (int j = 1; j <= AMOUNT_OF_DIGITS_IN_NUMBER; j++) {
-                ARRAY_OF_POWERS[i][j] = pow(i, j);
-            }
-        }
+        IntStream.range(0, AMOUNT_OF_SIMPLE_DIGITS).forEach(i ->
+                IntStream.rangeClosed(1, AMOUNT_OF_DIGITS_IN_NUMBER).forEach(j ->
+                        ARRAY_OF_POWERS[i][j] = pow(i, j)
+                )
+        );
     }
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
-        Set<Long> result = getNumbers(MAX_NUMBER);
 
-        int i = 1;
-        for (long armstrongNumber : result) {
-            System.out.println(i + ". " + armstrongNumber);
-            i++;
-        }
+        getNumbers(MAX_NUMBER).forEach(System.out::println);
+
         System.out.println(String.format("Execution time: %dms", (System.currentTimeMillis() - startTime)));
         System.out.println("Used memory: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024) + "mb");
     }
 
-    private static Set<Long> getNumbers(final long number) {
+    private static Set<Long> getNumbers(long number) {
         Set<Long> armstrongNumbers = new TreeSet<>();
 
         //Main loop
@@ -67,14 +65,10 @@ public class ArmstrongNumbers {
     }
 
     /**
-     * Analog of Math.pow which works with long type
+     * Analog of Math.pow which works work with long type
      */
-    private static long pow(final int base, final int exponent) {
-        long pow = 1;
-        for (int i = 1; i <= exponent; i++) {
-            pow *= base;
-        }
-        return pow;
+    private static long pow(int base, int exponent) {
+        return LongStream.rangeClosed(1, exponent).reduce(1, (pow, e) -> pow * base);
     }
 
     /*
@@ -95,7 +89,7 @@ public class ArmstrongNumbers {
         return currentSum;
     }
 
-    private static boolean isArmstrongNumber(final long number) {
+    private static boolean isArmstrongNumber(long number) {
         return number == getSumOfPowers(number);
     }
 }
