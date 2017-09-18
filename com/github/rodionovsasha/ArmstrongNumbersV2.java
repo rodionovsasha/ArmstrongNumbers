@@ -5,7 +5,7 @@ import java.util.TreeSet;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-public class ArmstrongNumbersV2 {
+class ArmstrongNumbersV2 {
     private static final int AMOUNT_OF_SIMPLE_DIGITS = 10; // from 0 to 9
     private static final long MAX_NUMBER = Long.MAX_VALUE;
     private static final int AMOUNT_OF_DIGITS_IN_NUMBER = (int)Math.log10(MAX_NUMBER) + 1;
@@ -22,23 +22,23 @@ public class ArmstrongNumbersV2 {
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
 
-        getNumbers(MAX_NUMBER).forEach(System.out::println);
+        getNumbers().forEach(System.out::println);
 
         System.out.println(String.format("Execution time: %dms", (System.currentTimeMillis() - startTime)));
         System.out.println("Used memory: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024) + "mb");
     }
 
-    private static Set<Long> getNumbers(long number) {
+    private static Set<Long> getNumbers() {
         Set<Long> armstrongNumbers = new TreeSet<>();
 
         //Main loop
-        for (long i = 1; i < number; i = getNextNumber(i)) {
+        for (long i = 1; i < MAX_NUMBER; i = getNextNumber(i)) {
             if (i < 0) {
                 break; // the maximum value is reached
             }
 
             long sumOfPowers = getSumOfPowers(i);
-            if (sumOfPowers <= number && isArmstrongNumber(sumOfPowers)) {
+            if (isArmstrongNumber(sumOfPowers)) {
                 armstrongNumbers.add(sumOfPowers);
             }
         }
@@ -65,9 +65,9 @@ public class ArmstrongNumbersV2 {
     }
 
     /**
-     * Analog of Math.pow which works work with long type
+     * Analog of Math.pow which works with long type
      */
-    private static long pow(int base, int exponent) {
+    private static long pow(final int base, final int exponent) {
         return LongStream.rangeClosed(1, exponent).reduce(1, (pow, e) -> pow * base);
     }
 
@@ -75,21 +75,22 @@ public class ArmstrongNumbersV2 {
     * 135 returns true:  1 < 3 < 5
     * 153 returns false: 1 < 5 > 3
     * */
-    private static boolean isGrowingNumber(long number) {
+    private static boolean isGrowingNumber(final long number) {
         return (number + 1) % 10 != 1;
     }
 
-    private static long getSumOfPowers(long number) {
-        int power = (int)Math.log10(number) + 1; // get amount of digits in a number
+    private static long getSumOfPowers(final long number) {
+        long currentNumber = number;
+        int power = (int)Math.log10(currentNumber) + 1; // get amount of digits in a number
         long currentSum = 0;
-        while (number > 0) {
-            currentSum = currentSum + ARRAY_OF_POWERS[(int)(number % 10)][power]; // get powers from array by indexes and then the sum.
-            number = number / 10;
+        while (currentNumber > 0) {
+            currentSum = currentSum + ARRAY_OF_POWERS[(int)(currentNumber % 10)][power]; // get powers from array by indexes and then the sum.
+            currentNumber /= 10;
         }
         return currentSum;
     }
 
-    private static boolean isArmstrongNumber(long number) {
+    private static boolean isArmstrongNumber(final long number) {
         return number == getSumOfPowers(number);
     }
 }
