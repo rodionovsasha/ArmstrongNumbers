@@ -31,18 +31,10 @@ class ArmstrongNumbersV2 {
     private static Set<Long> getNumbers() {
         Set<Long> armstrongNumbers = new TreeSet<>();
 
-        //Main loop
-        for (long i = 1; i < MAX_NUMBER; i = getNextNumber(i)) {
-            if (i < 0) {
-                break; // the maximum value is reached
-            }
-
-            long sumOfPowers = getSumOfPowers(i);
-            if (isArmstrongNumber(sumOfPowers)) {
-                armstrongNumbers.add(sumOfPowers);
-            }
-        }
-
+        LongStream.iterate(1, ArmstrongNumbersV2::getNextNumber)
+                .takeWhile(i -> i > 0 && i < MAX_NUMBER)
+                .filter(i -> isArmstrongNumber(getSumOfPowers(i)))
+                .forEach(i -> armstrongNumbers.add(getSumOfPowers(i)));
         return armstrongNumbers;
     }
 
