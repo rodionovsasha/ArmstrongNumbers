@@ -31,8 +31,8 @@ class ArmstrongNumbersV2 {
     private static Set<Long> getNumbers() {
         Set<Long> armstrongNumbers = new TreeSet<>();
 
-        LongStream.iterate(1, ArmstrongNumbersV2::getNextNumber)
-                .takeWhile(i -> i > 0 && i < MAX_NUMBER)
+        LongStream.iterate(1, i -> i < MAX_NUMBER, ArmstrongNumbersV2::getNextNumber)
+                .takeWhile(i -> i > 0)
                 .filter(i -> isArmstrongNumber(getSumOfPowers(i)))
                 .forEach(i -> armstrongNumbers.add(getSumOfPowers(i)));
         return armstrongNumbers;
