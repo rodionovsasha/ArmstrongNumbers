@@ -12,9 +12,12 @@
 
 # Hardware
 8 x Intel(R) Core(TM) i7-4790 CPU @ 3.60GHz
-# Output
-Execution time: 2511ms  
+# Output v1
+Execution time: 2234ms
 Used memory: 5mb
+# Output v2
+Execution time: 2135ms
+Used memory: 4mb
 
 1. 1
 2. 2
