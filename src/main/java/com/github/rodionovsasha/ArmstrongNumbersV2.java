@@ -35,6 +35,7 @@ class ArmstrongNumbersV2 {
         LongStream.iterate(1, i -> i < MAX_NUMBER, ArmstrongNumbersV2::getNextNumber)
                 .takeWhile(i -> i > 0)
                 .map(ArmstrongNumbersV2::getSumOfPowers)
+                .filter(sumOfPowers -> sumOfPowers <= MAX_NUMBER)
                 .filter(ArmstrongNumbersV2::isArmstrongNumber)
                 .forEach(armstrongNumbers::add);
         return armstrongNumbers;

@@ -39,7 +39,7 @@ class ArmstrongNumbers {
             }
 
             long sumOfPowers = getSumOfPowers(i);
-            if (isArmstrongNumber(sumOfPowers)) {
+            if (sumOfPowers <= MAX_NUMBER && isArmstrongNumber(sumOfPowers)) {
                 armstrongNumbers.add(sumOfPowers);
             }
         }
