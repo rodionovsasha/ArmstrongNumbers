@@ -10,6 +10,7 @@ class ArmstrongNumbersV2 {
     private static final long MAX_NUMBER = Long.MAX_VALUE;
     private static final int AMOUNT_OF_DIGITS_IN_NUMBER = (int)Math.log10(MAX_NUMBER) + 1;
     private static final long[][] ARRAY_OF_POWERS = new long[AMOUNT_OF_SIMPLE_DIGITS][AMOUNT_OF_DIGITS_IN_NUMBER + 1];
+    private static int counter = 1;
 
     static {
         IntStream.range(0, AMOUNT_OF_SIMPLE_DIGITS).forEach(i ->
@@ -22,7 +23,7 @@ class ArmstrongNumbersV2 {
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
 
-        getNumbers().forEach(System.out::println);
+        getNumbers().forEach(n -> System.out.println(counter++ + ". " + n));
 
         System.out.println(String.format("Execution time: %dms", (System.currentTimeMillis() - startTime)));
         System.out.println("Used memory: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024) + "mb");

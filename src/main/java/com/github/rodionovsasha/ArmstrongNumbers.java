@@ -8,6 +8,7 @@ class ArmstrongNumbers {
     private static final long MAX_NUMBER = Long.MAX_VALUE;
     private static final int AMOUNT_OF_DIGITS_IN_NUMBER = (int)Math.log10(MAX_NUMBER) + 1;
     private static final long[][] ARRAY_OF_POWERS = new long[AMOUNT_OF_SIMPLE_DIGITS][AMOUNT_OF_DIGITS_IN_NUMBER + 1];
+    private static int counter = 1;
 
     static {
         for (int i = 0; i < AMOUNT_OF_SIMPLE_DIGITS; i++) {
@@ -21,10 +22,8 @@ class ArmstrongNumbers {
         long startTime = System.currentTimeMillis();
         Set<Long> result = getNumbers();
 
-        int i = 1;
         for (long armstrongNumber : result) {
-            System.out.println(i + ". " + armstrongNumber);
-            i++;
+            System.out.println(counter++ + ". " + armstrongNumber);
         }
         System.out.println(String.format("Execution time: %dms", (System.currentTimeMillis() - startTime)));
         System.out.println("Used memory: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024) + "mb");
