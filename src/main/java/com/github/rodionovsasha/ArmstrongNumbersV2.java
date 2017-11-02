@@ -63,7 +63,7 @@ class ArmstrongNumbersV2 {
      * Analog of Math.pow which works with long type
      */
     private static long pow(final int base, final int exponent) {
-        return LongStream.rangeClosed(1, exponent).reduce(1, (pow, e) -> pow * base);
+        return LongStream.rangeClosed(1, exponent).reduce(1, (pow, exp) -> pow * base);
     }
 
     /*
