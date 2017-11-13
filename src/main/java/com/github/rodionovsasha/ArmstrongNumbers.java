@@ -6,7 +6,7 @@ import java.util.TreeSet;
 class ArmstrongNumbers {
     private static final int AMOUNT_OF_SIMPLE_DIGITS = 10; // from 0 to 9
     private static final long MAX_NUMBER = Long.MAX_VALUE;
-    private static final int AMOUNT_OF_DIGITS_IN_NUMBER = (int)Math.log10(MAX_NUMBER) + 1;
+    private static final int AMOUNT_OF_DIGITS_IN_NUMBER = (int) Math.log10(MAX_NUMBER) + 1;
     private static final long[][] ARRAY_OF_POWERS = new long[AMOUNT_OF_SIMPLE_DIGITS][AMOUNT_OF_DIGITS_IN_NUMBER + 1];
     private static int counter = 1;
 
@@ -51,18 +51,18 @@ class ArmstrongNumbers {
         long copyOfNumber = number;
         if (isGrowingNumber(copyOfNumber)) { // here we have numbers where each digit not less than previous one and not more than next one: 12, 1557, 333 and so on.
             return ++copyOfNumber;
-        } else { // here we have numbers which end in zero: 10, 20, ..., 100, 110, 5000, 1000000 and so on.
-            long lastNumber = 1; //can be: 1,2,3..., 10,20,30,...,100,200,300,...
-
-            while (copyOfNumber % 10 == 0) {// 5000 -> 500 -> 50: try to get the last non-zero digit
-                copyOfNumber = copyOfNumber / 10;
-                lastNumber = lastNumber * 10;
-            }
-            long lastNonZeroDigit = copyOfNumber % 10;
-
-            lastNumber = lastNonZeroDigit * lastNumber / 10;
-            return number + lastNumber; //e.g. number=100, lastNumber=10, lastNonZeroDigit=1
         }
+
+        // here we have numbers which end in zero: 10, 20, ..., 100, 110, 5000, 1000000 and so on.
+        long lastNumber = 1; //can be: 1,2,3..., 10,20,30,...,100,200,300,...
+
+        while (copyOfNumber % 10 == 0) {// 5000 -> 500 -> 50: try to get the last non-zero digit
+            copyOfNumber = copyOfNumber / 10;
+            lastNumber = lastNumber * 10;
+        }
+        long lastNonZeroDigit = copyOfNumber % 10;
+
+        return number + (lastNonZeroDigit * lastNumber / 10); //e.g. number=100, lastNumber=10, lastNonZeroDigit=1
     }
 
     /**
@@ -86,10 +86,10 @@ class ArmstrongNumbers {
 
     private static long getSumOfPowers(final long number) {
         long currentNumber = number;
-        int power = (int)Math.log10(currentNumber) + 1; // get amount of digits in a number
+        int power = (int) Math.log10(currentNumber) + 1; // get amount of digits in a number
         long currentSum = 0;
         while (currentNumber > 0) {
-            currentSum = currentSum + ARRAY_OF_POWERS[(int)(currentNumber % 10)][power]; // get powers from array by indexes and then the sum.
+            currentSum = currentSum + ARRAY_OF_POWERS[(int) (currentNumber % 10)][power]; // get powers from array by indexes and then the sum.
             currentNumber /= 10;
         }
         return currentSum;
