@@ -8,12 +8,12 @@ import java.util.stream.LongStream;
 class ArmstrongNumbersV2 {
     private static final int AMOUNT_OF_SIMPLE_DIGITS = 10; // from 0 to 9
     private static final long MAX_NUMBER = Long.MAX_VALUE;
-    private static final int AMOUNT_OF_DIGITS_IN_NUMBER = (int) Math.log10(MAX_NUMBER) + 1;
+    private static final int AMOUNT_OF_DIGITS_IN_NUMBER = getDigitsAmount(MAX_NUMBER);
     private static final long[][] ARRAY_OF_POWERS = new long[AMOUNT_OF_SIMPLE_DIGITS][AMOUNT_OF_DIGITS_IN_NUMBER + 1];
     private static int counter = 1;
 
     static {
-        IntStream.range(0, AMOUNT_OF_SIMPLE_DIGITS).forEach(i ->
+        IntStream.range(1, AMOUNT_OF_SIMPLE_DIGITS).forEach(i ->
                 IntStream.rangeClosed(1, AMOUNT_OF_DIGITS_IN_NUMBER).forEach(j ->
                         ARRAY_OF_POWERS[i][j] = pow(i, j)
                 )
@@ -76,7 +76,7 @@ class ArmstrongNumbersV2 {
 
     private static long getSumOfPowers(final long number) {
         long currentNumber = number;
-        int power = (int) Math.log10(currentNumber) + 1; // get amount of digits in a number
+        int power = getDigitsAmount(currentNumber);
         long currentSum = 0;
         while (currentNumber > 0) {
             currentSum = currentSum + ARRAY_OF_POWERS[(int) (currentNumber % 10)][power]; // get powers from array by indexes and then the sum.
@@ -87,5 +87,9 @@ class ArmstrongNumbersV2 {
 
     private static boolean isArmstrongNumber(final long number) {
         return number == getSumOfPowers(number);
+    }
+
+    private static int getDigitsAmount(long number) {
+        return (int) Math.log10(number) + 1;
     }
 }
