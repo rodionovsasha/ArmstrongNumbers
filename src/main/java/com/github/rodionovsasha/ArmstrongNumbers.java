@@ -6,13 +6,12 @@ import java.util.TreeSet;
 class ArmstrongNumbers {
     private static final int AMOUNT_OF_SIMPLE_DIGITS = 10; // from 0 to 9
     private static final long MAX_NUMBER = Long.MAX_VALUE;
-    private static final int AMOUNT_OF_DIGITS_IN_NUMBER = getDigitsAmount(MAX_NUMBER);
-    private static final long[][] ARRAY_OF_POWERS = new long[AMOUNT_OF_SIMPLE_DIGITS][AMOUNT_OF_DIGITS_IN_NUMBER + 1];
+    private static final long[][] ARRAY_OF_POWERS = new long[AMOUNT_OF_SIMPLE_DIGITS][getDigitsAmount(MAX_NUMBER) + 1];
     private static int counter = 1;
 
     static {
         for (int i = 1; i < AMOUNT_OF_SIMPLE_DIGITS; i++) {
-            for (int j = 1; j <= AMOUNT_OF_DIGITS_IN_NUMBER; j++) {
+            for (int j = 1; j <= getDigitsAmount(MAX_NUMBER); j++) {
                 ARRAY_OF_POWERS[i][j] = pow(i, j);
             }
         }

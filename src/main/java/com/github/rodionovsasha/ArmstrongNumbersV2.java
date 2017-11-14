@@ -8,13 +8,12 @@ import java.util.stream.LongStream;
 class ArmstrongNumbersV2 {
     private static final int AMOUNT_OF_SIMPLE_DIGITS = 10; // from 0 to 9
     private static final long MAX_NUMBER = Long.MAX_VALUE;
-    private static final int AMOUNT_OF_DIGITS_IN_NUMBER = getDigitsAmount(MAX_NUMBER);
-    private static final long[][] ARRAY_OF_POWERS = new long[AMOUNT_OF_SIMPLE_DIGITS][AMOUNT_OF_DIGITS_IN_NUMBER + 1];
+    private static final long[][] ARRAY_OF_POWERS = new long[AMOUNT_OF_SIMPLE_DIGITS][getDigitsAmount(MAX_NUMBER) + 1];
     private static int counter = 1;
 
     static {
         IntStream.range(1, AMOUNT_OF_SIMPLE_DIGITS).forEach(i ->
-                IntStream.rangeClosed(1, AMOUNT_OF_DIGITS_IN_NUMBER).forEach(j ->
+                IntStream.rangeClosed(1, getDigitsAmount(MAX_NUMBER)).forEach(j ->
                         ARRAY_OF_POWERS[i][j] = pow(i, j)
                 )
         );
