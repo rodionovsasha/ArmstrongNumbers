@@ -10,11 +10,14 @@ class ArmstrongNumbers {
     private static int counter = 1;
 
     static {
-        for (int i = 1; i < AMOUNT_OF_SIMPLE_DIGITS; i++) {
-            for (int j = 1; j <= getDigitsAmount(MAX_NUMBER); j++) {
+        for (int i = 0; i < AMOUNT_OF_SIMPLE_DIGITS; i++) {
+            for (int j = 0; j < getDigitsAmount(MAX_NUMBER) + 1; j++) {
                 ARRAY_OF_POWERS[i][j] = pow(i, j);
             }
         }
+        assert ARRAY_OF_POWERS[0][0] == 1;
+        assert ARRAY_OF_POWERS[2][2] == 4;
+        assert ARRAY_OF_POWERS[9][4] == 6561;
     }
 
     public static void main(String[] args) {
