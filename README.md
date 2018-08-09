@@ -1,23 +1,26 @@
 # Armstrong Numbers
-Реализация алгоритма поиска чисел Армстронга на java.
+Implementation of the Armstrong numbers (https://en.wikipedia.org/wiki/Narcissistic_number) search algorithm on Java.
 
-Число S состоит из M цифр, например, S=370 и M (количество цифр) = 3.  
-Необходимо реализовать логику метода getNumbers, который должен среди натуральных чисел меньше N (long) находить все числа,
-удовлетворяющие следующему критерию: число S равно сумме его цифр, возведенных в M степень getNumbers должен возвращать все такие числа в порядке возрастания.
+The number S consists of M digits, for example, S = 370 and M (number of digits) = 3.
+It is necessary to implement the logic of the method, which must be among natural numbers less than N (long) to find all numbers, satisfying the following criterion:
+the number S is equal to the sum of its digits raised to the power of M. The program must return all such numbers in ascending order.
 
-Пример искомого числа:  
-370 = 3*3*3 + 7*7*7 + 0*0*0  
-8208 = 8*8*8*8 + 2*2*2*2 + 0*0*0*0 + 8*8*8*8  
-На выполнение дается 10 секунд и 50 МБ памяти.
+Example of the number:
+370 = 3 * 3 * 3 + 7 * 7 * 7 + 0 * 0 * 0
+8208 = 8 * 8 * 8 * 8 + 2 * 2 * 2 * 2 + 0 * 0 * 0 * 0 + 8 * 8 * 8 * 8
+The execution time must not be more then 10 seconds and used memory limit is 50 mb.
 
 # Hardware
 8 x Intel(R) Core(TM) i7-4790 CPU @ 3.60GHz
-# Output v1
+# Output v1 (java 7)
 Execution time: 2234ms
 Used memory: 5mb
-# Output v2
+# Output v2 (java 8 + stream API)
 Execution time: 2135ms
 Used memory: 4mb
+# Output v3 (java.math.BigInteger)
+Execution time: 2m33s
+Used memory: 94mb
 
 1. 1
 2. 2
@@ -69,3 +72,12 @@ Used memory: 4mb
 48. 3289582984443187032
 49. 4498128791164624869
 50. 4929273885928088826
+
+These numbers exist for only 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 16, 17, 19, 20, 21, 23, 24, 25, 27, 29, 31, 32, 33, 34, 35, 37, 38, and 39 digits.
+The full list of the numbers is here: http://mathworld.wolfram.com/NarcissisticNumber.html
+
+`ArmstrongNumbersAll.java` is used to find all armstrong numbers (based on `java.math.BigInteger`).
+# Output all numbers
+### n = 19
+Execution time: 2m33s
+Used memory: 94mb
