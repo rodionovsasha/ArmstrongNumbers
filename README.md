@@ -1,26 +1,27 @@
 # Armstrong Numbers
-Implementation of the Armstrong numbers (https://en.wikipedia.org/wiki/Narcissistic_number) search algorithm on Java.
+Implementation of the Armstrong numbers (https://en.wikipedia.org/wiki/Narcissistic_number) search algorithm on Java.  
+  
+The number S consists of M digits, for example, S = 370 and M (number of digits) = 3.  
+It is necessary to implement the logic of the method, which must be among natural numbers less than N (long) to find all numbers, satisfying the following criterion:  
+the number S is equal to the sum of its digits raised to the power of M. The program must return all such numbers in ascending order.  
 
-The number S consists of M digits, for example, S = 370 and M (number of digits) = 3.
-It is necessary to implement the logic of the method, which must be among natural numbers less than N (long) to find all numbers, satisfying the following criterion:
-the number S is equal to the sum of its digits raised to the power of M. The program must return all such numbers in ascending order.
-
-Example of the number:
-370 = 3 * 3 * 3 + 7 * 7 * 7 + 0 * 0 * 0
-8208 = 8 * 8 * 8 * 8 + 2 * 2 * 2 * 2 + 0 * 0 * 0 * 0 + 8 * 8 * 8 * 8
-The execution time must not be more then 10 seconds and used memory limit is 50 mb.
+Example of the number:  
+370 = 3 * 3 * 3 + 7 * 7 * 7 + 0 * 0 * 0  
+8208 = 8 * 8 * 8 * 8 + 2 * 2 * 2 * 2 + 0 * 0 * 0 * 0 + 8 * 8 * 8 * 8  
+The execution time must not be more then 10 seconds and used memory limit is 50 mb.  
 
 # Hardware
-8 x Intel(R) Core(TM) i7-4790 CPU @ 3.60GHz
+4 x Intel(R) Core(TM) i5 CPU 760 @ 2.80GHz  
+Memory: 15.7 GiB of RAM  
 # Output v1 (java 7)
-Execution time: 2234ms
-Used memory: 5mb
+Execution time: 2234ms  
+Used memory: 5mb  
 # Output v2 (java 8 + stream API)
-Execution time: 2135ms
-Used memory: 4mb
+Execution time: 2135ms  
+Used memory: 4mb  
 # Output v3 (java.math.BigInteger)
-Execution time: 2m33s
-Used memory: 94mb
+Execution time: 2m33s  
+Used memory: 94mb  
 
 1. 1
 2. 2
@@ -72,12 +73,22 @@ Used memory: 94mb
 48. 3289582984443187032
 49. 4498128791164624869
 50. 4929273885928088826
+  
+These numbers exist for only 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 16, 17, 19, 20, 21, 23, 24, 25, 27, 29, 31, 32, 33, 34, 35, 37, 38, and 39 digits.  
+The full list of the numbers is here: http://mathworld.wolfram.com/NarcissisticNumber.html  
 
-These numbers exist for only 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 16, 17, 19, 20, 21, 23, 24, 25, 27, 29, 31, 32, 33, 34, 35, 37, 38, and 39 digits.
-The full list of the numbers is here: http://mathworld.wolfram.com/NarcissisticNumber.html
-
-`ArmstrongNumbersAll.java` is used to find all armstrong numbers (based on `java.math.BigInteger`).
+`ArmstrongNumbersAll.java` is used to find all armstrong numbers (based on `java.math.BigInteger`).  
 # Output all numbers
 ### n = 19
-Execution time: 2m33s
-Used memory: 94mb
+Execution time: 2m54s  
+### n = 20
+Execution time: 4m38s  
+### n = 21
+Execution time: 7m53s  
+### n = 23
+Execution time: 21m6s
+### n = 24
+Execution time: 31m27s  
+...
+### n = 39
+Execution time: ?  
