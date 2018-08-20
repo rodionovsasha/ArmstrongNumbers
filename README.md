@@ -80,15 +80,42 @@ The full list of the numbers is here: http://mathworld.wolfram.com/NarcissisticN
 `ArmstrongNumbersAll.java` is used to find all armstrong numbers (based on `java.math.BigInteger`).  
 # Output all numbers
 ### n = 19
-Execution time: 2m54s  
+Execution time: 2m54s  (`java.lang.Long` max value)
 ### n = 20
 Execution time: 4m38s  
 ### n = 21
 Execution time: 7m53s  
 ### n = 23
-Execution time: 21m6s
+Execution time: 21m6s  
 ### n = 24
 Execution time: 31m27s  
-...
+### n = 25
+Execution time: 47m47s  
+### n = 26
+Execution time: 70m49s  (1.16h)  
+### n = 27
+Execution time: 103m59s  (1.71h)  
+### n = 28
+Execution time: 145m3s  (2.36h)  
+### n = 29
+Execution time: 205m3s  (3.41h)  
+### n = 30
+Execution time: 285m12s  (4.75h)  
+### n = 31
+Execution time: 395m20s  (6.58h)  
+### n = 32
+Execution time: 551m26s  (9.18h)  
+### n = 33
+Execution time: 764m19s  (12.73h)  
+### n = 34
+Execution time: 1047m16s  (17.45h)  
+### n = 35
+Execution time: 1429m46s  (23.81h)  
+### n = 36
+Execution time: 1914m33s  (31.9h)  
+### n = 37
+Execution time: 2536m56s  (42.3h)  
+### n = 38
+Execution time: 2536m56s  (31.9h)  
 ### n = 39
-Execution time: > 3h  
+Execution time: > 3354m10s  (55.9h)  
