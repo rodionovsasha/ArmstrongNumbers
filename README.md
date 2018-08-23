@@ -120,6 +120,10 @@ Execution time: 2536m56s  (31.9h)
 ### n = 39
 Execution time: > 3354m10s  (55.9h)  
 
+`ArmstrongNumbersAllV2.java` is also based on `java.math.BigInteger`, but uses another search algorithm. This approach returns all numbers for n <= 40 in `245m17s (4h)`.  
+
+The rest of numbers:  
+
 51. 63105425988599693916
 52. 128468643043731391252
 53. 449177399146038697307
