@@ -27,7 +27,7 @@ class ArmstrongNumbers {
         for (long armstrongNumber : result) {
             System.out.println(counter++ + ". " + armstrongNumber);
         }
-        System.out.println(String.format("Execution time: %dms", (System.currentTimeMillis() - startTime)));
+        System.out.printf("Execution time: %dms%n", (System.currentTimeMillis() - startTime));
         System.out.println("Used memory: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024) + "mb");
     }
 
@@ -41,7 +41,7 @@ class ArmstrongNumbers {
             }
 
             long sumOfPowers = getSumOfPowers(i);
-            if (sumOfPowers <= MAX_NUMBER && isArmstrongNumber(sumOfPowers)) {
+            if (isArmstrongNumber(sumOfPowers)) {
                 armstrongNumbers.add(sumOfPowers);
             }
         }

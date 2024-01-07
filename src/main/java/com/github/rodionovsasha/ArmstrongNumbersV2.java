@@ -24,7 +24,7 @@ class ArmstrongNumbersV2 {
 
         getNumbers().forEach(n -> System.out.println(counter++ + ". " + n));
 
-        System.out.println(String.format("Execution time: %dms", (System.currentTimeMillis() - startTime)));
+        System.out.printf("Execution time: %dms%n", (System.currentTimeMillis() - startTime));
         System.out.println("Used memory: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024) + "mb");
     }
 
@@ -34,7 +34,6 @@ class ArmstrongNumbersV2 {
         LongStream.iterate(1, i -> i < MAX_NUMBER, ArmstrongNumbersV2::getNextNumber)
                 .takeWhile(i -> i > 0)
                 .map(ArmstrongNumbersV2::getSumOfPowers)
-                .filter(sumOfPowers -> sumOfPowers <= MAX_NUMBER)
                 .filter(ArmstrongNumbersV2::isArmstrongNumber)
                 .forEach(armstrongNumbers::add);
 

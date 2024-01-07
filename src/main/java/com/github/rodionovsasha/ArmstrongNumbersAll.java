@@ -10,7 +10,7 @@ import static java.math.BigInteger.ZERO;
 
 class ArmstrongNumbersAll {
     private static final int MAX_DIGITS_AMOUNT = 39; // max digits amount where armstrong numbers exist(39)
-    private static double factor = Math.log(2) / Math.log(10);
+    private static final double FACTOR = Math.log(2) / Math.log(10);
     private static int counter = 1;
 
     public static void main(String[] args) {
@@ -25,7 +25,7 @@ class ArmstrongNumbersAll {
         long minutes = (executionTime / 1000)  / 60;
         long seconds = (executionTime / 1000) % 60;
 
-        System.out.println(String.format("Execution time: %dm%ds", minutes, seconds));
+        System.out.printf("Execution time: %dm%ds%n", minutes, seconds);
         System.out.println("Used memory: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024) + "mb");
     }
 
@@ -85,7 +85,7 @@ class ArmstrongNumbersAll {
     }
 
     private static int getDigitsAmount(BigInteger number) {
-        int digitCount = (int) (factor * number.bitLength() + 1);
+        int digitCount = (int) (FACTOR * number.bitLength() + 1);
         if (TEN.pow(digitCount - 1).compareTo(number) > 0) {
             return digitCount - 1;
         }

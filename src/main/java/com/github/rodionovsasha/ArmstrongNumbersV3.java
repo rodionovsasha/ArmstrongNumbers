@@ -38,7 +38,7 @@ class ArmstrongNumbersV3 {
         long minutes = (executionTime / 1000)  / 60;
         long seconds = (executionTime / 1000) % 60;
 
-        System.out.println(String.format("Execution time: %dm%ds", minutes, seconds));
+        System.out.printf("Execution time: %dm%ds%n", minutes, seconds);
         System.out.println("Used memory: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024) + "mb");
     }
 
