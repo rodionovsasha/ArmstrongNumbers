@@ -4,16 +4,17 @@ import java.math.BigInteger;
 import java.util.stream.IntStream;
 
 /**
- * Search and prints all Apocalyptic Numbers for 1000.
+ * Search and prints all Apocalyptic Numbers for 10_000.
  * <p>
  * Apocalyptic Number - a number of the form 2^n that contains the digits 666 (i.e., the beast number).
  * 2^(157) is an apocalyptic number. The first few such powers are 157, 192, 218, 220, ...
  * <a href="https://mathworld.wolfram.com/ApocalypticNumber.html">Apocalyptic Numbers</a>
  * <p>
- * Execution time: ~1 seconds.
+ * Execution time: 1s
+ * Used memory: 147mb
  */
 class ApocalypticNumbers {
-    private static final int MAX_POWER = 1000;
+    private static final int MAX_POWER = 10_000;
     private static int counter = 1;
 
     public static void main(String[] args) {

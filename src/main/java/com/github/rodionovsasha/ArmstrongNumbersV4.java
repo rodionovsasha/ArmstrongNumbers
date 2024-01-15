@@ -2,6 +2,13 @@ package com.github.rodionovsasha;
 
 import java.util.stream.IntStream;
 
+/**
+ * Search and prints all Armstrong Numbers for 'Long.MAX_VALUE'.
+ * <a href="https://mathworld.wolfram.com/NarcissisticNumber.html">Armstrong Numbers</a>
+ * <p>
+ * Execution time: 571ms
+ * Used memory: 3mb
+ */
 class ArmstrongNumbersV4 {
     private static final int AMOUNT_OF_SIMPLE_DIGITS = 10; // from 0 to 9
     private static final int AMOUNT_OF_DIGITS_IN_NUMBER = (int) Math.log10(Long.MAX_VALUE) + 1;

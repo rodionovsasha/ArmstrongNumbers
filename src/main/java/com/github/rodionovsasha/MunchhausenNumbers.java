@@ -9,7 +9,8 @@ import java.util.stream.IntStream;
  * Note: if the definition 0^0 = 0 is adopted, then there are exactly four Munchhausen Numbers: 0, 1, 3435, and 438579088,
  * otherwise only 0, 1, 3435.
  * <p>
- * Execution time: ~30 seconds.
+ * Execution time: 36s
+ * Used memory: 3mb
  */
 class MunchhausenNumbers {
     private static final int AMOUNT_OF_SIMPLE_DIGITS = 10; // from 0 to 9
