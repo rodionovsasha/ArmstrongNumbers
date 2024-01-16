@@ -3,7 +3,7 @@ package com.github.rodionovsasha;
 import java.util.stream.IntStream;
 
 /**
- * Search and prints all Armstrong Numbers for 'Long.MAX_VALUE'.
+ * Search and prints all Armstrong Numbers for 'Integer.MAX_VALUE'.
  * <a href="https://mathworld.wolfram.com/NarcissisticNumber.html">Armstrong Numbers</a>
  * <p>
  * Execution time: 571ms

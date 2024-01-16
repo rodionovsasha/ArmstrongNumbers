@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.util.stream.IntStream;
 
 /**
- * Search and prints all Apocalyptic Numbers for 10_000.
+ * Search and prints all Apocalyptic Numbers for the limit 10_000.
  * <p>
  * Apocalyptic Number - a number of the form 2^n that contains the digits 666 (i.e., the beast number).
  * 2^(157) is an apocalyptic number. The first few such powers are 157, 192, 218, 220, ...

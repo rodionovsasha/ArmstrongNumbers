@@ -3,7 +3,7 @@ package com.github.rodionovsasha;
 import java.util.stream.IntStream;
 
 /**
- * Search and prints all Munchhausen Numbers for 'Integer.MAX_VALUE'.
+ * Search and prints all Munchhausen Numbers for the limit 'Integer.MAX_VALUE'.
  * <a href="https://mathworld.wolfram.com/MuenchhausenNumber.html">Munchhausen Numbers</a>
  * <p>
  * Note: if the definition 0^0 = 0 is adopted, then there are exactly four Munchhausen Numbers: 0, 1, 3435, and 438579088,
@@ -38,7 +38,7 @@ class MunchhausenNumbers {
 
         while (temp > 0) {
             var digit = temp % 10; //yields the rightest digit as remainder
-            sum = sum + ARRAY_OF_POWERS[digit];
+            sum += ARRAY_OF_POWERS[digit];
             temp /= 10;            // yields the remaining number
         }
 

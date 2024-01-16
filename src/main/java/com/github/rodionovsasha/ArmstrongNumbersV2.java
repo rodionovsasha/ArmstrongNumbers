@@ -78,7 +78,7 @@ class ArmstrongNumbersV2 {
         int power = getDigitsAmount(currentNumber);
         long currentSum = 0;
         while (currentNumber > 0) {
-            currentSum = currentSum + ARRAY_OF_POWERS[(int) (currentNumber % 10)][power]; // get powers from array by indexes and then the sum.
+            currentSum += ARRAY_OF_POWERS[(int) (currentNumber % 10)][power]; // get powers from array by indexes and then the sum.
             currentNumber /= 10;
         }
         return currentSum;

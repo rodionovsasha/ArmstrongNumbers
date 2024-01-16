@@ -3,7 +3,7 @@ package com.github.rodionovsasha;
 import java.util.stream.IntStream;
 
 /**
- * Search and prints all Zero Free Numbers for limit 1_000_000.
+ * Search and prints all Zero Free Numbers for the limit 1_000_000.
  * <p>
  * An integer whose decimal digits contain no zeros is said to be zero-free.
  * The first few positive zero-free integers are 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 21, ...
