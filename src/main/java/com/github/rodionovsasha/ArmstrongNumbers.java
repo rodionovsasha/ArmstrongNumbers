@@ -1,7 +1,6 @@
 package com.github.rodionovsasha;
 
 import java.util.Arrays;
-import java.util.TreeSet;
 
 /**
  * Search and prints all Armstrong Numbers for the limit {@link Long#MAX_VALUE}.
@@ -10,6 +9,7 @@ import java.util.TreeSet;
 public class ArmstrongNumbers {
     private static final int DIGITS = 10;
     private static final long MAX_NUMBER = Long.MAX_VALUE;
+    private static final int INITIAL_RESULT_SIZE = 64;
     private static final long[] FIRST_50_NUMBERS = {
             1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L,
             153L, 370L, 371L, 407L,
@@ -47,10 +47,12 @@ public class ArmstrongNumbers {
     };
 
     private final long limit;
-    private final TreeSet<Long> result = new TreeSet<>();
     private final int[] digitCounts = new int[DIGITS];
     private final int[] checkedDigitCounts = new int[DIGITS];
     private final long[] powers = new long[DIGITS];
+    private final int[] maxDigitCounts = new int[DIGITS];
+    private long[] result = new long[INITIAL_RESULT_SIZE];
+    private int resultSize;
     private int digitCount;
 
     private static int counter = 1;
@@ -64,9 +66,9 @@ public class ArmstrongNumbers {
 
         assertKnownNumbers(armstrongNumbers);
 
-        Arrays.stream(armstrongNumbers)
-                .mapToObj(armstrongNumber -> counter++ + ". " + armstrongNumber)
-                .forEach(System.out::println);
+        for (long armstrongNumber : armstrongNumbers) {
+            System.out.println(counter++ + ". " + armstrongNumber);
+        }
 
         System.out.printf("Execution time: %dms%n", (System.currentTimeMillis() - startTime));
         System.out.printf("Used memory: %dmb", (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
@@ -99,20 +101,37 @@ public class ArmstrongNumbers {
     private long[] find() {
         int maxDigits = getDigitsAmount(limit - 1);
 
+        initPowers();
         for (digitCount = 1; digitCount <= maxDigits; digitCount++) {
-            fillPowers();
-            findDigitCombinations(9, digitCount);
+            updatePowersAndMaxDigitCounts();
+            findDigitCombinations(9, digitCount, 0);
         }
 
-        return result.stream().mapToLong(Long::longValue).toArray();
+        return sortedResult();
     }
 
     /**
-     * Caches {@code digit^digitCount} values for the current digit length.
+     * Prepares cached powers before the first digit-length iteration.
      */
-    private void fillPowers() {
-        for (int digit = 0; digit < DIGITS; digit++) {
-            powers[digit] = pow(digit, digitCount);
+    private void initPowers() {
+        powers[0] = 0;
+        maxDigitCounts[0] = Integer.MAX_VALUE;
+
+        for (int digit = 1; digit < DIGITS; digit++) {
+            powers[digit] = 1;
+        }
+    }
+
+    /**
+     * Advances cached powers to {@code digit^digitCount} and caches maximum
+     * useful counts for the current digit length.
+     */
+    private void updatePowersAndMaxDigitCounts() {
+        for (int digit = 1; digit < DIGITS; digit++) {
+            powers[digit] *= digit;
+
+            long maxCount = (limit - 1) / powers[digit];
+            maxDigitCounts[digit] = maxCount < Integer.MAX_VALUE ? (int) maxCount : Integer.MAX_VALUE;
         }
     }
 
@@ -123,43 +142,36 @@ public class ArmstrongNumbers {
      * two {@code 3}s and one {@code 7}, without trying every permutation
      * {@code 337}, {@code 373}, {@code 733} separately.</p>
      */
-    private void findDigitCombinations(int digit, int rest) {
+    private void findDigitCombinations(int digit, int rest, long sum) {
         if (digit == 0) {
             digitCounts[0] = rest;
-            checkCurrentCombination();
+            checkCurrentCombination(sum);
             return;
         }
 
-        for (int count = 0; count <= rest; count++) {
+        int maxCount = Math.min(rest, maxDigitCounts[digit]);
+        long currentSum = sum;
+
+        for (int count = 0; count <= maxCount; count++) {
             digitCounts[digit] = count;
-            findDigitCombinations(digit - 1, rest - count);
+            findDigitCombinations(digit - 1, rest - count, currentSum);
+
+            if (count < maxCount) {
+                if (powers[digit] > limit - 1 - currentSum) {
+                    break;
+                }
+                currentSum += powers[digit];
+            }
         }
     }
 
     /**
-     * Converts the current digit-count combination to the Armstrong sum and
-     * keeps it if the sum has exactly the same digits.
+     * Keeps the already calculated Armstrong sum if it has exactly the same
+     * digits as the current digit-count combination.
      */
-    private void checkCurrentCombination() {
-        long sum = 0;
-        long maxAllowed = limit - 1;
-
-        for (int digit = 1; digit < DIGITS; digit++) {
-            int count = digitCounts[digit];
-            if (count == 0) {
-                continue;
-            }
-
-            long power = powers[digit];
-            if (power > (maxAllowed - sum) / count) {
-                return;
-            }
-
-            sum += power * count;
-        }
-
+    private void checkCurrentCombination(long sum) {
         if (sum > 0 && hasSameDigits(sum)) {
-            result.add(sum);
+            addResult(sum);
         }
     }
 
@@ -168,28 +180,41 @@ public class ArmstrongNumbers {
      * digit-count combination.
      */
     private boolean hasSameDigits(long number) {
-        Arrays.fill(checkedDigitCounts, 0);
+        System.arraycopy(digitCounts, 0, checkedDigitCounts, 0, DIGITS);
 
         int currentDigitCount = 0;
         while (number > 0) {
-            checkedDigitCounts[(int) (number % 10)]++;
+            int digit = (int) (number % 10);
+            checkedDigitCounts[digit]--;
+            if (checkedDigitCounts[digit] < 0) {
+                return false;
+            }
+
             number /= 10;
             currentDigitCount++;
         }
 
-        return currentDigitCount == digitCount && Arrays.equals(digitCounts, checkedDigitCounts);
+        return currentDigitCount == digitCount;
     }
 
     /**
-     * Calculates an integer power using {@code long} arithmetic.
+     * Adds a number to the compact result buffer.
      */
-    private static long pow(int base, int exponent) {
-        long result = 1;
-        for (int i = 0; i < exponent; i++) {
-            result *= base;
+    private void addResult(long number) {
+        if (resultSize == result.length) {
+            result = Arrays.copyOf(result, result.length * 2);
         }
 
-        return result;
+        result[resultSize++] = number;
+    }
+
+    /**
+     * Returns found numbers in ascending order.
+     */
+    private long[] sortedResult() {
+        long[] sorted = Arrays.copyOf(result, resultSize);
+        Arrays.sort(sorted);
+        return sorted;
     }
 
     /**
