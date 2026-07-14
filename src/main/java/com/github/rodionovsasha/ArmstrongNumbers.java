@@ -1,35 +1,70 @@
 package com.github.rodionovsasha;
 
-import java.util.Set;
+import java.util.Arrays;
 import java.util.TreeSet;
-import java.util.stream.IntStream;
 
 /**
- * Search and prints all Armstrong Numbers for the limit 'Long.MAX_VALUE'.
+ * Search and prints all Armstrong Numbers for the limit {@link Long#MAX_VALUE}.
  * <a href="https://mathworld.wolfram.com/NarcissisticNumber.html">Armstrong Numbers</a>
- * <p>
- * Execution time: 4935ms
- * Used memory: 3mb
  */
-class ArmstrongNumbers {
-    private static final int AMOUNT_OF_SIMPLE_DIGITS = 10; // from 0 to 9
+public class ArmstrongNumbers {
+    private static final int DIGITS = 10;
     private static final long MAX_NUMBER = Long.MAX_VALUE;
-    private static final long[][] ARRAY_OF_POWERS = new long[AMOUNT_OF_SIMPLE_DIGITS][getDigitsAmount(MAX_NUMBER) + 1];
+    private static final long[] FIRST_50_NUMBERS = {
+            1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L,
+            153L, 370L, 371L, 407L,
+            1634L, 8208L, 9474L,
+            54748L, 92727L, 93084L,
+            548834L,
+            1741725L, 4210818L, 9800817L, 9926315L,
+            24678050L, 24678051L, 88593477L,
+            146511208L, 472335975L, 534494836L, 912985153L,
+            4679307774L,
+            32164049650L, 32164049651L, 40028394225L, 42678290603L,
+            44708635679L, 49388550606L, 82693916578L, 94204591914L,
+            28116440335967L,
+            4338281769391370L, 4338281769391371L,
+            21897142587612075L, 35641594208964132L, 35875699062250035L,
+            1517841543307505039L, 3289582984443187032L,
+            4498128791164624869L, 4929273885928088826L
+    };
+
+    private static final int[] FIRST_50_DIGIT_COUNTS = {
+            1, 1, 1, 1, 1, 1, 1, 1, 1,
+            3, 3, 3, 3,
+            4, 4, 4,
+            5, 5, 5,
+            6,
+            7, 7, 7, 7,
+            8, 8, 8,
+            9, 9, 9, 9,
+            10,
+            11, 11, 11, 11, 11, 11, 11, 11,
+            14,
+            16, 16,
+            17, 17, 17,
+            19, 19, 19, 19
+    };
+
+    private final long limit;
+    private final TreeSet<Long> result = new TreeSet<>();
+    private final int[] digitCounts = new int[DIGITS];
+    private final int[] checkedDigitCounts = new int[DIGITS];
+    private final long[] powers = new long[DIGITS];
+    private int digitCount;
+
     private static int counter = 1;
 
-    static {
-        for (int i = 0; i < AMOUNT_OF_SIMPLE_DIGITS; i++) {
-            for (int j = 0; j < getDigitsAmount(MAX_NUMBER) + 1; j++) {
-                ARRAY_OF_POWERS[i][j] = pow(i, j);
-            }
-        }
-    }
-
+    /**
+     * Prints all Armstrong numbers that fit into the signed {@code long} range.
+     */
     public static void main(String[] args) {
         var startTime = System.currentTimeMillis();
+        long[] armstrongNumbers = getNumbers(MAX_NUMBER);
 
-        getNumbers().stream()
-                .mapToLong(armstrongNumber -> armstrongNumber)
+        assertKnownNumbers(armstrongNumbers);
+
+        Arrays.stream(armstrongNumbers)
                 .mapToObj(armstrongNumber -> counter++ + ". " + armstrongNumber)
                 .forEach(System.out::println);
 
@@ -37,77 +72,150 @@ class ArmstrongNumbers {
         System.out.printf("Used memory: %dmb", (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024));
     }
 
-    private static Set<Long> getNumbers() {
-        var armstrongNumbers = new TreeSet<Long>();
-
-        //Main loop
-        for (long i = 1; i < MAX_NUMBER; i = getNextNumber(i)) {
-            if (i < 0) {
-                break; // the maximum value is reached
-            }
-
-            var sumOfPowers = getSumOfPowers(i);
-            if (isArmstrongNumber(sumOfPowers)) {
-                armstrongNumbers.add(sumOfPowers);
-            }
+    /**
+     * Finds all Armstrong numbers among natural numbers strictly less than {@code n}.
+     *
+     * @param n exclusive upper bound
+     * @return Armstrong numbers in ascending order
+     */
+    public static long[] getNumbers(long n) {
+        if (n <= 1) {
+            return new long[0];
         }
 
-        return armstrongNumbers;
-    }
-
-    private static long getNextNumber(long number) {
-        var copyOfNumber = number;
-        if (isGrowingNumber(copyOfNumber)) { // here we have numbers where each digit not less than previous one and not more than next one: 12, 1557, 333 and so on.
-            return ++copyOfNumber;
-        }
-
-        // here we have numbers which end in zero: 10, 20, ..., 100, 110, 5000, 1000000 and so on.
-        var lastNumber = 1L; //can be: 1,2,3..., 10,20,30,...,100,200,300,...
-
-        while (copyOfNumber % 10 == 0) {// 5000 -> 500 -> 50: try to get the last non-zero digit
-            copyOfNumber = copyOfNumber / 10;
-            lastNumber = lastNumber * 10;
-        }
-        var lastNonZeroDigit = copyOfNumber % 10;
-
-        return number + (lastNonZeroDigit * lastNumber / 10); //e.g. number=100, lastNumber=10, lastNonZeroDigit=1
+        return new ArmstrongNumbers(n).find();
     }
 
     /**
-     * Analog of Math.pow which works with long type
+     * Creates a search context for one exclusive upper bound.
      */
-    private static long pow(int base, int exponent) {
-        return IntStream.rangeClosed(1, exponent)
-                .mapToLong(i -> base)
-                .reduce(1L, (a, b) -> a * b);
+    private ArmstrongNumbers(long limit) {
+        this.limit = limit;
     }
 
-    /*
-    * 135 returns true:  1 < 3 < 5
-    * 153 returns false: 1 < 5 > 3
-    * */
-    private static boolean isGrowingNumber(long number) {
-        return (number + 1) % 10 != 1;
-    }
+    /**
+     * Iterates over possible digit lengths and collects matching sums.
+     */
+    private long[] find() {
+        int maxDigits = getDigitsAmount(limit - 1);
 
-    private static long getSumOfPowers(long number) {
-        var currentNumber = number;
-        var power = getDigitsAmount(currentNumber);
-        var currentSum = 0L;
-
-        while (currentNumber > 0) {
-            currentSum = currentSum + ARRAY_OF_POWERS[(int) (currentNumber % 10)][power]; // get powers from array by indexes and then the sum.
-            currentNumber /= 10;
+        for (digitCount = 1; digitCount <= maxDigits; digitCount++) {
+            fillPowers();
+            findDigitCombinations(9, digitCount);
         }
 
-        return currentSum;
+        return result.stream().mapToLong(Long::longValue).toArray();
     }
 
-    private static boolean isArmstrongNumber(long number) {
-        return number == getSumOfPowers(number);
+    /**
+     * Caches {@code digit^digitCount} values for the current digit length.
+     */
+    private void fillPowers() {
+        for (int digit = 0; digit < DIGITS; digit++) {
+            powers[digit] = pow(digit, digitCount);
+        }
     }
 
+    /**
+     * Recursively enumerates all digit-count combinations for the current length.
+     *
+     * <p>For example, for a three-digit number it checks combinations like
+     * two {@code 3}s and one {@code 7}, without trying every permutation
+     * {@code 337}, {@code 373}, {@code 733} separately.</p>
+     */
+    private void findDigitCombinations(int digit, int rest) {
+        if (digit == 0) {
+            digitCounts[0] = rest;
+            checkCurrentCombination();
+            return;
+        }
+
+        for (int count = 0; count <= rest; count++) {
+            digitCounts[digit] = count;
+            findDigitCombinations(digit - 1, rest - count);
+        }
+    }
+
+    /**
+     * Converts the current digit-count combination to the Armstrong sum and
+     * keeps it if the sum has exactly the same digits.
+     */
+    private void checkCurrentCombination() {
+        long sum = 0;
+        long maxAllowed = limit - 1;
+
+        for (int digit = 1; digit < DIGITS; digit++) {
+            int count = digitCounts[digit];
+            if (count == 0) {
+                continue;
+            }
+
+            long power = powers[digit];
+            if (power > (maxAllowed - sum) / count) {
+                return;
+            }
+
+            sum += power * count;
+        }
+
+        if (sum > 0 && hasSameDigits(sum)) {
+            result.add(sum);
+        }
+    }
+
+    /**
+     * Checks that {@code number}'s digit multiset equals the currently selected
+     * digit-count combination.
+     */
+    private boolean hasSameDigits(long number) {
+        Arrays.fill(checkedDigitCounts, 0);
+
+        int currentDigitCount = 0;
+        while (number > 0) {
+            checkedDigitCounts[(int) (number % 10)]++;
+            number /= 10;
+            currentDigitCount++;
+        }
+
+        return currentDigitCount == digitCount && Arrays.equals(digitCounts, checkedDigitCounts);
+    }
+
+    /**
+     * Calculates an integer power using {@code long} arithmetic.
+     */
+    private static long pow(int base, int exponent) {
+        long result = 1;
+        for (int i = 0; i < exponent; i++) {
+            result *= base;
+        }
+
+        return result;
+    }
+
+    /**
+     * Counts decimal digits without floating-point rounding.
+     */
     private static int getDigitsAmount(long number) {
-        return (int) Math.log10(number) + 1;
+        int digits = 0;
+        do {
+            digits++;
+            number /= 10;
+        } while (number > 0);
+
+        return digits;
+    }
+
+    /**
+     * Verifies the first 50 known base-10 Armstrong numbers and their digit
+     * counts from the MathWorld Narcissistic Number table.
+     */
+    private static void assertKnownNumbers(long[] actual) {
+        assert Arrays.equals(FIRST_50_NUMBERS, actual) :
+                "Unexpected Armstrong numbers: " + Arrays.toString(actual);
+
+        for (int i = 0; i < FIRST_50_NUMBERS.length; i++) {
+            assert getDigitsAmount(FIRST_50_NUMBERS[i]) == FIRST_50_DIGIT_COUNTS[i] :
+                    "Unexpected digit count for " + FIRST_50_NUMBERS[i];
+        }
     }
 }
