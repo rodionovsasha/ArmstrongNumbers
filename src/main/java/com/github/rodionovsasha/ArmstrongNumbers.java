@@ -5,6 +5,11 @@ import java.util.Arrays;
 /**
  * Search and prints all Armstrong Numbers for the limit {@link Long#MAX_VALUE}.
  * <a href="https://mathworld.wolfram.com/NarcissisticNumber.html">Armstrong Numbers</a>
+ * MacBook Pro
+ * Apple M1 Pro
+ * Memory 16 GB
+ * Execution time: 399ms
+ * Used memory: 10mb
  */
 public class ArmstrongNumbers {
     private static final int DIGITS = 10;
